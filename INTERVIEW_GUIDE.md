@@ -18,6 +18,8 @@
 8. [DevOps, Docker & Cloud Deployment](#8-devops-docker--cloud-deployment)
 9. [25 Common Interview Questions & Model Answers](#9-25-common-interview-questions--model-answers)
 10. [Future Roadmap & Scaling Strategies](#10-future-roadmap--scaling-strategies)
+11. [High-Level & Behavioral Questions (HR & Manager Rounds)](#11-high-level--behavioral-questions-hr--manager-rounds)
+12. [Core Web & Computer Science Fundamentals](#12-core-web--computer-science-fundamentals)
 
 ---
 
@@ -377,3 +379,125 @@ If asked: *"How would you take this project to the next level?"*, share these co
 2. **PostgreSQL + Redis Distributed Caching:** Migrate SQLite to PostgreSQL and place a Redis cache in front of `/api/launches` to serve high-traffic launch moments (e.g., Starship orbital tests) with sub-5ms response times.
 3. **Automated SMS & WhatsApp Webhooks:** Integrate Twilio / WhatsApp Business API to dispatch instant SMS notifications 10 minutes prior to liftoff for users without active push subscriptions.
 4. **Interactive 3D Orbital Trajectory Map:** Use Three.js / CesiumJS to render a real-time 3D Earth globe showing active rocket flight paths, telemetry coordinates, and ground tracks.
+
+---
+
+## 11. High-Level & Behavioral Questions (HR & Manager Rounds)
+
+Many interviewers (Hiring Managers, Directors, HR) won't inspect your code line-by-line. Instead, they test your **communication, problem-solving maturity, engineering mindset, and resilience**. Here are the exact questions they ask and how to answer them using SpaceBot:
+
+---
+
+### B1: "Walk me through this project as if I'm a non-technical stakeholder."
+> *"SpaceBot is essentially an air traffic control radar, but for rocket launches into space. People love watching rocket launches—like SpaceX's Starship or ISRO's lunar missions—but the information is scattered across obscure Twitter accounts and technical forums. 
+>
+> SpaceBot aggregates all upcoming global launches into a single, beautiful dashboard. It translates technical aerospace jargon into simple one-sentence summaries, gives you a live countdown to liftoff, and lets you subscribe to notifications so your phone buzzes before the engines ignite. To keep it secure and spam-free, users sign in with their Google account."*
+
+---
+
+### B2: "What was the single hardest technical challenge you encountered, and how did you resolve it?" (STAR Method)
+> * **Situation:** *"While implementing Google Sign-In, I originally looked at quick mock/demo logins that just decode the user's name and email from the frontend. However, this was completely insecure—anyone could spoof a token with curl and impersonate any user.*
+> * **Task:** *I wanted real, cryptographic enterprise-level authentication with zero fake fallbacks, while keeping it seamless for the user.*
+> * **Action:** *I implemented Google Identity Services on the frontend with `@react-oauth/google` to obtain a signed RS256 JWT ID token. On the backend, I integrated `Google.Apis.Auth` to cryptographically verify Google's RSA signature against their live public JWKS keys, checking expiration, issuer, and audience. I also added automated test cases to prove that modified or forged tokens return a strict HTTP 401 Unauthorized.*
+> * **Result:** *We achieved bank-grade, tamper-proof authentication with zero passwords stored in our database, while keeping the user experience down to a single click."*
+
+---
+
+### B3: "Tell me about an unexpected bug or roadblock during development and how you debugged it."
+> *"When configuring the production Docker deployment on Render, the backend was returning a 404 whenever a user refreshed the page on a sub-route like `/privacy`. 
+> 
+> I realized that because React is a Single Page Application (SPA) with client-side routing, the browser was asking the ASP.NET Core server for `/privacy` directly as a physical file, which didn't exist in `wwwroot`. 
+> 
+> To solve this, I researched ASP.NET Core's static file middleware and implemented `app.MapFallbackToFile("index.html")`. This instructs the web server: if a request doesn't match an API controller or static asset, serve `index.html` and let React handle the route client-side. The bug was resolved permanently across all current and future routes."*
+
+---
+
+### B4: "How did you prioritize features and manage scope during development?"
+> *"I used an MVP-first, iterative approach:
+> 
+> * **Phase 1 (Core Engine):** Get live launch data into SQLite and serve it through a clean REST API.
+> * **Phase 2 (User Experience):** Build the React UI with sub-second countdown clocks and the dual-theme system ('Solar Paper' and 'Cosmic Glass').
+> * **Phase 3 (Production Hardening):** Replace demo auth with real Google OAuth 2.0, gatekeep telemetry behind the Gatekeeper Landing screen, and implement PWA Web Push.
+> * **Phase 4 (DevOps & Mobile Polish):** Package into a unified multi-stage Dockerfile, deploy to Render, and refine responsive CSS down to 320px screens.
+> 
+> Whenever I was tempted to add complex features like 3D Earth rendering early on, I pushed them to the roadmap so I could focus on delivering a stable, rock-solid core application first."*
+
+---
+
+### B5: "If you were to rebuild this project from scratch today, what would you do differently?"
+> *"I would design it with WebSockets (SignalR) from day one instead of REST polling. Launch countdowns frequently suffer from holds and weather delays in the final 5 minutes before liftoff. With SignalR, the backend could push instantaneous state updates (e.g. 'HOLD at T-00:40') directly to all active browser sessions without clients needing to trigger manual or interval syncs."*
+
+---
+
+## 12. Core Web & Computer Science Fundamentals
+
+Interviewers frequently use your project as a launching pad to test **foundational software engineering concepts**:
+
+---
+
+### F1: "What is the difference between Authentication and Authorization?"
+* **Authentication (AuthN) = Who are you?**  
+  *In SpaceBot:* Google OAuth 2.0 verifies your identity by providing a cryptographically signed JWT confirming you own that email.
+* **Authorization (AuthZ) = What are you allowed to do?**  
+  *In SpaceBot:* Once authenticated, the system authorizes you to view telemetry, customize agency alerts, and dispatch broadcast notifications. Unauthenticated users are restricted to the Gatekeeper landing page.
+
+---
+
+### F2: "What is a JWT (JSON Web Token), and how does it work?"
+> *"A JWT is an open standard (RFC 7519) for securely transmitting information between parties as a compact, URL-safe JSON object. It consists of three parts separated by dots (`.`):
+> 
+> 1. **Header:** Contains the token type (`JWT`) and signing algorithm (`RS256` in Google's case).
+> 2. **Payload:** Contains claims—data about the user (e.g., `sub` [unique Google ID], `email`, `name`, `exp` [expiration timestamp]).
+> 3. **Signature:** Created by taking the encoded header and payload, and signing them with the issuer's private key.
+> 
+> Because the token is digitally signed, the recipient (our ASP.NET backend) can verify its authenticity using Google's public key without needing a shared secret or a database session lookup, making it completely stateless and scalable."*
+
+---
+
+### F3: "What is CORS (Cross-Origin Resource Sharing), and how did you handle it?"
+> *"CORS is a browser security mechanism that restricts a web page on one domain from making HTTP requests to a different domain. Browsers enforce this via HTTP headers (`Access-Control-Allow-Origin`).
+> 
+> In SpaceBot, I handled CORS with two clean strategies:
+> 1. **In Local Development:** Vite runs on `localhost:5173` while .NET runs on `localhost:5247`. In `Program.cs`, I configured a dev policy explicitly permitting origins `http://localhost:5173` and `http://127.0.0.1:5173`.
+> 2. **In Production:** By using a unified multi-stage Docker container that copies React's `dist/` into ASP.NET's `wwwroot`, the frontend SPA and the backend API are hosted on the **exact same origin** (`https://spacebot-jetj.onrender.com`). This completely eliminates cross-origin network hops in production."*
+
+---
+
+### F4: "What is a Progressive Web App (PWA) and how does the Service Worker operate?"
+> *"A PWA is a web application that uses modern web APIs to deliver an app-like experience. It can be installed on iOS and Android home screens without an app store, works in standalone mode without browser chrome, and receives background push notifications.
+> 
+> The backbone is the **Service Worker (`sw.js`)**: a JavaScript script that runs in the background, separate from the webpage. It acts as a network proxy and listens for OS-level Push Events even when the browser tab is closed, allowing SpaceBot to trigger native lock screen notifications before rocket launches."*
+
+---
+
+### F5: "Why choose SQL (SQLite) over NoSQL (MongoDB) for SpaceBot?"
+> *"SpaceBot's core domain models have well-defined, structured relationships: a User subscribes to specific Agencies, a Launch has Pad coordinates and telemetry, and an AlertLog has a foreign key referencing the specific Launch it notified users about. 
+> 
+> Relational SQL databases provide ACID transactions, referential integrity (preventing orphaned alert logs if a launch is deleted), and schema enforcement. SQLite was the ideal choice because it runs in-process with zero external server dependencies, ensuring zero-latency queries and effortless cloud containerization."*
+
+---
+
+### F6: "What is the difference between Synchronous and Asynchronous programming (`async/await`)?"
+> *"Synchronous code blocks the executing thread until an operation finishes. In a web server, if an HTTP request blocks a thread while querying the database or fetching external APIs, that thread cannot serve other users, leading to thread pool starvation under load.
+> 
+> Asynchronous programming with `async/await` uses non-blocking I/O. When `await _db.SaveChangesAsync()` or `await _httpClient.GetAsync()` is called, the C# thread is returned to the thread pool to handle other requests while the operating system waits for the I/O completion port. Once the data arrives, a thread resumes execution. This allows ASP.NET Core to handle thousands of concurrent requests with minimal RAM."*
+
+---
+
+### F7: "What is the Virtual DOM in React, and how does it optimize performance?"
+> *"The browser's real DOM tree is expensive to manipulate directly—each change triggers browser reflow and repaint calculations. 
+> 
+> React maintains a lightweight copy of the UI in memory called the **Virtual DOM**. When component state updates (e.g. countdown seconds changing), React creates a new Virtual DOM tree, performs a 'diffing' reconciliation algorithm against the previous snapshot, calculates the minimal set of changes, and batches only those exact DOM mutations (e.g. just updating the seconds text). In SpaceBot, this ensures that a 1-second countdown tick doesn't re-render the entire mission card or launch list."*
+
+---
+
+### F8: "Explain the entire journey from typing the URL to seeing SpaceBot rendered on the screen."
+> *"1. **DNS Lookup:** The browser checks local DNS cache, then resolves `spacebot-jetj.onrender.com` to Render's IP address.
+> 2. **TCP & TLS Handshake:** A secure TCP connection is established (SYN, SYN-ACK, ACK), followed by TLS 1.3 negotiation to establish HTTPS encryption.
+> 3. **HTTP GET Request:** The browser requests `/`.
+> 4. **Reverse Proxy & Container:** Render's reverse proxy routes the packet to our Docker container listening on port `8080`.
+> 5. **ASP.NET Middleware:** ASP.NET Core receives the request. Because `/` matches no controller, `app.UseDefaultFiles()` rewrites it to `/index.html` from `wwwroot` and streams it back with HTTP 200 OK.
+> 6. **DOM Parsing & Asset Fetching:** The browser parses `index.html`, discovers `<script type="module" src="/assets/index.js">` and `<link rel="stylesheet">`, and downloads the bundles.
+> 7. **React Hydration:** React mounts `App.tsx` into `#root`. It checks `localStorage` for an existing Google session.
+> 8. **Conditional Rendering:** If unauthenticated, it immediately renders `GatekeeperLanding.tsx` with Google Identity Services. If authenticated, it fires asynchronous fetches to `/api/launches/metrics` and renders the orbital telemetry cards!"*
+

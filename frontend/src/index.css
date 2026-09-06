@@ -1,0 +1,339 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+/* ==========================================================================
+   THEME VARIABLES
+   ========================================================================== */
+
+:root, [data-theme='dark'] {
+  --font-primary: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Space Grotesk', monospace;
+
+  /* Backgrounds */
+  --bg-app: #090d16;
+  --bg-card: #101626;
+  --bg-card-hover: #151d32;
+  --bg-surface: #141c30;
+  --bg-input: #0b101c;
+  --bg-modal: #0d1322;
+
+  /* Borders */
+  --border-card: #1e2942;
+  --border-card-hover: #2d3e63;
+  --border-divider: #182238;
+
+  /* Text colors */
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+
+  /* Accents */
+  --accent-primary: #38bdf8;       /* Electric Sky */
+  --accent-primary-hover: #0284c7;
+  --accent-primary-subtle: rgba(56, 189, 248, 0.12);
+  
+  --accent-rocket: #f97316;        /* Aerospace Orange */
+  --accent-rocket-subtle: rgba(249, 115, 22, 0.14);
+
+  --accent-success: #10b981;       /* Orbit Green */
+  --accent-success-subtle: rgba(16, 185, 129, 0.14);
+
+  --accent-warning: #f59e0b;
+  --accent-warning-subtle: rgba(245, 158, 11, 0.14);
+
+  --accent-danger: #ef4444;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 12px 28px rgba(0, 0, 0, 0.5);
+}
+
+/* ==========================================================================
+   LIGHT MODE — "Solar Paper" 
+   Warm NASA mission-document aesthetic: aged parchment canvas + rocket orange
+   ========================================================================== */
+[data-theme='light'] {
+  /* Warm parchment / mission document canvas */
+  --bg-app: #f5ede0;
+  --bg-card: #fffaf4;
+  --bg-card-hover: #fff8ef;
+  --bg-surface: #fdf4e8;
+  --bg-input: #fffaf4;
+  --bg-modal: #fffaf4;
+
+  /* Warm architectural borders */
+  --border-card: #e8d5c0;
+  --border-card-hover: #d4b89a;
+  --border-divider: #eedec8;
+
+  /* High-legibility text */
+  --text-primary: #1a1008;
+  --text-secondary: #5c3d1e;
+  --text-muted: #9c7a56;
+
+  /* NASA Mission Orange + Deep Navy */
+  --accent-primary: #1e3a5f;          /* Deep Navy — NASA uniform */
+  --accent-primary-hover: #152b47;
+  --accent-primary-subtle: rgba(30, 58, 95, 0.1);
+
+  --accent-rocket: #c94f0c;           /* Deep NASA Mission Orange */
+  --accent-rocket-subtle: rgba(201, 79, 12, 0.1);
+
+  --accent-success: #1a6e3c;          /* Deep Mission Green */
+  --accent-success-subtle: rgba(26, 110, 60, 0.1);
+
+  --accent-warning: #b45309;          /* Amber Caution */
+  --accent-warning-subtle: rgba(180, 83, 9, 0.1);
+
+  --accent-danger: #b91c1c;
+
+  /* Warm paper shadows */
+  --shadow-sm: 0 1px 3px rgba(100, 60, 20, 0.08);
+  --shadow-md: 0 4px 14px rgba(100, 60, 20, 0.1);
+  --shadow-lg: 0 14px 32px rgba(100, 60, 20, 0.14);
+}
+
+/* ==========================================================================
+   BASE & RESET
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-primary);
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background-color 0.25s ease, color 0.25s ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Light mode: subtle paper texture grid lines on background */
+[data-theme='light'] body {
+  background-image:
+    linear-gradient(rgba(201, 79, 12, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201, 79, 12, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* ==========================================================================
+   CARD SYSTEM
+   ========================================================================== */
+
+.card-clean {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: 14px;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.card-clean:hover {
+  border-color: var(--border-card-hover);
+  box-shadow: var(--shadow-md);
+}
+
+/* Light mode cards get a warm left accent on hover */
+[data-theme='light'] .card-clean:hover {
+  box-shadow: var(--shadow-md), 2px 0 0 0 var(--accent-rocket) inset;
+}
+
+/* ==========================================================================
+   SCROLLBAR
+   ========================================================================== */
+
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-app);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-card-hover);
+  border-radius: 4px;
+}
+
+/* ==========================================================================
+   BUTTONS
+   ========================================================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 8px 16px;
+  font-family: var(--font-primary);
+  font-size: 0.86rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.16s ease;
+  border: none;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background-color: var(--accent-primary);
+  color: #ffffff;
+}
+.btn-primary:hover {
+  background-color: var(--accent-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.btn-secondary {
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border-card);
+}
+.btn-secondary:hover {
+  background-color: var(--border-card);
+  border-color: var(--border-card-hover);
+  transform: translateY(-1px);
+}
+
+.btn-rocket {
+  background-color: var(--accent-rocket);
+  color: #ffffff;
+}
+.btn-rocket:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.btn-x {
+  background-color: #000000;
+  color: #ffffff;
+  border: 1px solid #333333;
+}
+.btn-x:hover {
+  background-color: #1a1a1a;
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   STATUS & TAG BADGES
+   ========================================================================== */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  font-size: 0.73rem;
+  font-weight: 600;
+  border-radius: 6px;
+  letter-spacing: 0.3px;
+}
+
+.badge-go {
+  background-color: var(--accent-success-subtle);
+  color: var(--accent-success);
+  border: 1px solid var(--accent-success);
+}
+
+.badge-tbd {
+  background-color: var(--accent-warning-subtle);
+  color: var(--accent-warning);
+  border: 1px solid var(--accent-warning);
+}
+
+.badge-agency {
+  background-color: var(--bg-surface);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-card);
+  font-weight: 700;
+}
+
+.badge-alert-sent {
+  background-color: var(--accent-primary-subtle);
+  color: var(--accent-primary);
+  border: 1px solid var(--accent-primary);
+}
+
+/* ==========================================================================
+   ANIMATIONS
+   ========================================================================== */
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes welcomeSlide {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   PILL SCROLL (mobile agency filter)
+   ========================================================================== */
+
+.pill-scroll-container {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.pill-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* ==========================================================================
+   RESPONSIVE GRID
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .missions-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .metrics-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .metrics-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+/* ==========================================================================
+   WELCOME BANNER (dismissible, one-time)
+   ========================================================================== */
+
+.welcome-banner {
+  animation: welcomeSlide 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ==========================================================================
+   MOBILE HEADER — hide text labels at very small widths
+   ========================================================================== */
+
+@media (max-width: 520px) {
+  .tab-label {
+    display: none;
+  }
+  .header-subtitle {
+    display: none;
+  }
+}
+

@@ -1,0 +1,16 @@
+# .NET build artifacts
+bin/
+obj/
+
+# SQLite database files (user data — never commit)
+*.db
+*.db-shm
+*.db-wal
+
+# User secrets / production config
+appsettings.Production.json
+appsettings.secrets.json
+
+# IDE files
+.vs/
+*.user

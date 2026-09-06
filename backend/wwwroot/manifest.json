@@ -1,0 +1,17 @@
+{
+  "short_name": "SpaceBot",
+  "name": "SpaceBot: Orbital Launch Intelligence",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#070b19",
+  "theme_color": "#0c1427",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "description": "Full-Stack Space Launch Tracker & Mission Alert Hub"
+}

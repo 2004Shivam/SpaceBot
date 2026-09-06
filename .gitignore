@@ -1,0 +1,26 @@
+# === Node / Frontend ===
+node_modules/
+dist/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+frontend/.env.production
+.npm
+
+# === .NET / Backend ===
+backend/bin/
+backend/obj/
+backend/*.db
+backend/*.db-shm
+backend/*.db-wal
+
+# === IDE / OS ===
+.vs/
+.vscode/
+*.user
+.DS_Store
+Thumbs.db
+
+# === Secrets / Configs ===
+*.env
+appsettings.Production.json

@@ -239,13 +239,14 @@ export const MissionCard: React.FC<MissionCardProps> = ({
         </div>
 
         {/* Action Buttons Row */}
-        <div style={{
+        <div className="mission-card-actions" style={{
           marginTop: 'auto',
           paddingTop: '10px',
           borderTop: '1px solid var(--border-divider)',
           display: 'flex',
           alignItems: 'center',
-          gap: '8px',
+          gap: '6px',
+          flexWrap: 'wrap',
         }}>
           {/* Quick Livestream search */}
           <button

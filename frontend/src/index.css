@@ -297,8 +297,47 @@ body {
 }
 
 /* ==========================================================================
-   RESPONSIVE GRID
+   MOBILE & RESPONSIVE REFINEMENTS
    ========================================================================== */
+
+.app-main-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 16px 16px 60px;
+  width: 100%;
+}
+
+.gatekeeper-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 16px 60px;
+  max-width: 920px;
+  margin: 0 auto;
+  text-align: center;
+  width: 100%;
+}
+
+.gatekeeper-card {
+  max-width: 440px;
+  width: 100%;
+  padding: 36px 28px;
+  border-radius: 20px;
+  border: 1px solid var(--border-card);
+  background-color: var(--bg-card);
+  box-shadow: var(--shadow-lg);
+  margin-bottom: 44px;
+  position: relative;
+  overflow: hidden;
+}
+
+.gatekeeper-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+  width: 100%;
+  max-width: 860px;
+}
 
 @media (max-width: 768px) {
   .missions-grid {
@@ -310,30 +349,58 @@ body {
   }
 }
 
-@media (max-width: 480px) {
-  .metrics-grid {
-    grid-template-columns: 1fr 1fr !important;
-  }
-}
-
-/* ==========================================================================
-   WELCOME BANNER (dismissible, one-time)
-   ========================================================================== */
-
-.welcome-banner {
-  animation: welcomeSlide 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* ==========================================================================
-   MOBILE HEADER — hide text labels at very small widths
-   ========================================================================== */
-
 @media (max-width: 520px) {
   .tab-label {
-    display: none;
+    display: none !important;
   }
   .header-subtitle {
-    display: none;
+    display: none !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-main-container {
+    padding: 10px 8px 40px !important;
+  }
+
+  .filter-btn-text {
+    display: none !important;
+  }
+
+  .metrics-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+
+  .metrics-grid .card-clean {
+    padding: 10px 8px !important;
+    gap: 8px !important;
+  }
+
+  .gatekeeper-container {
+    padding: 18px 8px 40px !important;
+  }
+
+  .gatekeeper-card {
+    padding: 24px 14px !important;
+    margin-bottom: 24px !important;
+    border-radius: 14px !important;
+  }
+
+  .gatekeeper-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  /* Modal responsiveness on mobile */
+  .card-clean[style*="max-width"] {
+    padding: 18px 14px !important;
+  }
+
+  /* MissionCard buttons */
+  .mission-card-actions button {
+    padding: 5px 8px !important;
+    font-size: 0.72rem !important;
   }
 }
 

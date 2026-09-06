@@ -235,7 +235,7 @@ export const App: React.FC = () => {
   const hasActiveFilters = search || selectedProvider !== 'ALL' || selectedStatus !== 'ALL';
 
   return (
-    <div style={{ maxWidth: '1240px', margin: '0 auto', padding: '16px 16px 60px' }}>
+    <div className="app-main-container">
 
       {/* Header */}
       <Header
@@ -402,7 +402,7 @@ export const App: React.FC = () => {
                 title="Advanced filters & sort"
               >
                 <SlidersHorizontal size={13} />
-                <span style={{ display: window.innerWidth > 480 ? 'inline' : 'none' }}>Filters</span>
+                <span className="filter-btn-text">Filters</span>
                 {hasActiveFilters && (
                   <span style={{
                     fontSize: '0.6rem', backgroundColor: 'var(--accent-primary)', color: '#fff',

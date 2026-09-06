@@ -38,44 +38,39 @@ export const GatekeeperLanding: React.FC<GatekeeperLandingProps> = ({
   };
 
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      padding: '30px 16px 60px',
-      maxWidth: '920px',
-      margin: '0 auto',
-      textAlign: 'center',
-    }}>
+    <div className="gatekeeper-container">
       {/* Pilot Badge */}
       <div style={{
         display: 'inline-flex',
         alignItems: 'center',
         gap: '8px',
-        padding: '6px 16px',
+        padding: '6px 14px',
         borderRadius: '999px',
         backgroundColor: 'var(--accent-rocket-subtle)',
         border: '1px solid var(--accent-rocket)',
         color: 'var(--accent-rocket)',
-        fontSize: '0.78rem',
+        fontSize: '0.75rem',
         fontWeight: 700,
         letterSpacing: '0.4px',
         textTransform: 'uppercase',
-        marginBottom: '20px',
+        marginBottom: '16px',
+        maxWidth: '100%',
         boxShadow: '0 2px 10px rgba(201, 79, 12, 0.15)',
       }}>
-        <Radio size={14} style={{ animation: 'pulse 2s infinite' }} />
-        <span>Restricted Mission Control • Authentication Required</span>
+        <Radio size={14} style={{ animation: 'pulse 2s infinite', flexShrink: 0 }} />
+        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          Mission Control Gateway
+        </span>
       </div>
 
       {/* Hero Headline */}
       <h1 style={{
-        fontSize: 'clamp(2rem, 5vw, 3.2rem)',
+        fontSize: 'clamp(1.7rem, 4.5vw, 2.8rem)',
         fontWeight: 900,
         lineHeight: 1.15,
-        letterSpacing: '-1px',
+        letterSpacing: '-0.5px',
         color: 'var(--text-primary)',
-        marginBottom: '16px',
+        marginBottom: '14px',
         maxWidth: '780px',
       }}>
         Orbital Launch Telemetry & Mission Dispatcher
@@ -83,44 +78,33 @@ export const GatekeeperLanding: React.FC<GatekeeperLandingProps> = ({
 
       {/* Subtitle */}
       <p style={{
-        fontSize: 'clamp(0.95rem, 2vw, 1.15rem)',
+        fontSize: 'clamp(0.88rem, 2vw, 1.05rem)',
         color: 'var(--text-secondary)',
-        lineHeight: 1.6,
-        maxWidth: '640px',
-        marginBottom: '36px',
+        lineHeight: 1.55,
+        maxWidth: '620px',
+        marginBottom: '28px',
       }}>
         Live rocket countdown windows, orbital telemetry, webcast streams, and mobile push notifications require authenticated Google credentials.
       </p>
 
       {/* Central Login Card */}
-      <div className="card-clean" style={{
-        maxWidth: '440px',
-        width: '100%',
-        padding: '36px 28px',
-        borderRadius: '20px',
-        border: '1px solid var(--border-card)',
-        backgroundColor: 'var(--bg-card)',
-        boxShadow: 'var(--shadow-lg)',
-        marginBottom: '44px',
-        position: 'relative',
-        overflow: 'hidden',
-      }}>
+      <div className="card-clean gatekeeper-card">
         <div style={{
-          width: '56px',
-          height: '56px',
-          borderRadius: '16px',
+          width: '52px',
+          height: '52px',
+          borderRadius: '14px',
           backgroundColor: 'var(--accent-rocket-subtle)',
           color: 'var(--accent-rocket)',
           display: 'inline-flex',
           alignItems: 'center',
           justifyContent: 'center',
-          marginBottom: '16px',
+          marginBottom: '14px',
         }}>
-          <Rocket size={30} />
+          <Rocket size={26} />
         </div>
 
         <h2 style={{
-          fontSize: '1.35rem',
+          fontSize: '1.25rem',
           fontWeight: 800,
           color: 'var(--text-primary)',
           marginBottom: '6px',
@@ -128,16 +112,16 @@ export const GatekeeperLanding: React.FC<GatekeeperLandingProps> = ({
           Sign in to Enter SpaceBot
         </h2>
         <p style={{
-          fontSize: '0.84rem',
+          fontSize: '0.82rem',
           color: 'var(--text-secondary)',
           lineHeight: 1.5,
-          marginBottom: '22px',
+          marginBottom: '20px',
         }}>
           One-click Google authentication unlocks live telemetry and saves your personalized agency alert subscriptions.
         </p>
 
-        {/* Real Google Login Button */}
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '22px' }}>
+        {/* Real Google Login Button (Responsive 280px) */}
+        <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginBottom: '20px' }}>
           <GoogleLogin
             onSuccess={handleGoogleSuccess}
             onError={handleGoogleError}
@@ -146,7 +130,7 @@ export const GatekeeperLanding: React.FC<GatekeeperLandingProps> = ({
             size="large"
             text="signin_with"
             shape="rectangular"
-            width="340"
+            width="280"
           />
         </div>
 
@@ -214,13 +198,7 @@ export const GatekeeperLanding: React.FC<GatekeeperLandingProps> = ({
       </div>
 
       {/* 4 Teaser Locked Cards */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-        gap: '14px',
-        width: '100%',
-        maxWidth: '860px',
-      }}>
+      <div className="gatekeeper-grid">
         {/* Card 1 */}
         <div className="card-clean" style={{
           padding: '20px 16px',

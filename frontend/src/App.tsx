@@ -12,12 +12,18 @@ import { ToastContainer } from './components/Toast';
 import type { ToastMessage } from './components/Toast';
 import { notificationService } from './services/notificationService';
 import { GatekeeperLanding } from './components/GatekeeperLanding';
+import { PrivacyPolicy } from './components/PrivacyPolicy';
 import {
   Search, Rocket, Download, AlertCircle, X, ArrowUpDown,
   SlidersHorizontal, ChevronDown, ChevronUp, Sparkles, RefreshCw,
 } from 'lucide-react';
 
 export const App: React.FC = () => {
+  // ── Privacy Policy Route ───────────────────────────────────────────────────
+  if (typeof window !== 'undefined' && window.location.pathname === '/privacy') {
+    return <PrivacyPolicy />;
+  }
+
   // ── Theme ──────────────────────────────────────────────────────────────────
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
     const saved = localStorage.getItem('spacebot-theme');

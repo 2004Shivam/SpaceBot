@@ -345,6 +345,14 @@ export const GatekeeperLanding: React.FC<GatekeeperLandingProps> = ({
           </p>
         </div>
       </div>
+
+      {/* Footer link to Privacy Policy */}
+      <div style={{ marginTop: '40px', fontSize: '0.76rem', color: 'var(--text-muted)' }}>
+        <span>SpaceBot Orbital Intelligence &copy; 2026 • </span>
+        <a href="/privacy" style={{ color: 'var(--text-secondary)', textDecoration: 'underline' }}>
+          Privacy Policy
+        </a>
+      </div>
     </div>
   );
 };

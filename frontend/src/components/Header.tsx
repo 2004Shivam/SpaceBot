@@ -53,7 +53,7 @@ export const Header: React.FC<HeaderProps> = ({
 
       {/* 2. Navigation & Mission Actions (Rendered when authenticated) */}
       {user && (
-        <div className="header-nav-group">
+        <div className="header-nav-row">
           {/* Segmented Tab Nav */}
           <div className="header-tabs">
             <button
@@ -107,7 +107,7 @@ export const Header: React.FC<HeaderProps> = ({
       )}
 
       {/* 3. Global User & Utility Controls */}
-      <div className="header-user-group">
+      <div className="header-user-controls">
         {/* Theme Toggle */}
         <button
           onClick={onToggleTheme}

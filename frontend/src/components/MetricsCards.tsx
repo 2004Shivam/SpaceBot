@@ -8,16 +8,9 @@ interface MetricsProps {
 
 export const MetricsCards: React.FC<MetricsProps> = ({ metrics }) => {
   return (
-    <div
-      className="metrics-grid"
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(4, 1fr)',
-        gap: '12px',
-        marginBottom: '18px',
-      }}
-    >
-      <div className="card-clean" style={{ padding: '14px 16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+    <div className="metrics-grid">
+      {/* 1. Tracked Missions */}
+      <div className="card-clean">
         <div style={{
           width: '38px',
           height: '38px',
@@ -31,7 +24,7 @@ export const MetricsCards: React.FC<MetricsProps> = ({ metrics }) => {
         }}>
           <Satellite size={19} />
         </div>
-        <div>
+        <div style={{ overflow: 'hidden', minWidth: 0, flex: 1 }}>
           <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.6px', fontWeight: 700, marginBottom: '2px' }}>
             Tracked
           </div>
@@ -41,7 +34,8 @@ export const MetricsCards: React.FC<MetricsProps> = ({ metrics }) => {
         </div>
       </div>
 
-      <div className="card-clean" style={{ padding: '14px 16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+      {/* 2. Next Up */}
+      <div className="card-clean">
         <div style={{
           width: '38px',
           height: '38px',
@@ -55,24 +49,29 @@ export const MetricsCards: React.FC<MetricsProps> = ({ metrics }) => {
         }}>
           <Clock size={19} />
         </div>
-        <div style={{ overflow: 'hidden', minWidth: 0 }}>
+        <div style={{ overflow: 'hidden', minWidth: 0, flex: 1 }}>
           <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.6px', fontWeight: 700, marginBottom: '2px' }}>
             Next Up
           </div>
-          <div style={{
-            fontSize: '0.82rem',
-            fontWeight: 700,
-            color: 'var(--accent-rocket)',
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-          }}>
+          <div
+            title={metrics?.nextLaunchName || 'Scanning...'}
+            style={{
+              fontSize: '0.82rem',
+              fontWeight: 700,
+              color: 'var(--accent-rocket)',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              lineHeight: 1.2,
+            }}
+          >
             {metrics?.nextLaunchName || 'Scanning...'}
           </div>
         </div>
       </div>
 
-      <div className="card-clean" style={{ padding: '14px 16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+      {/* 3. Active Agencies */}
+      <div className="card-clean">
         <div style={{
           width: '38px',
           height: '38px',
@@ -86,7 +85,7 @@ export const MetricsCards: React.FC<MetricsProps> = ({ metrics }) => {
         }}>
           <Globe2 size={19} />
         </div>
-        <div>
+        <div style={{ overflow: 'hidden', minWidth: 0, flex: 1 }}>
           <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.6px', fontWeight: 700, marginBottom: '2px' }}>
             Agencies
           </div>
@@ -96,7 +95,8 @@ export const MetricsCards: React.FC<MetricsProps> = ({ metrics }) => {
         </div>
       </div>
 
-      <div className="card-clean" style={{ padding: '14px 16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+      {/* 4. Alerts Logged */}
+      <div className="card-clean">
         <div style={{
           width: '38px',
           height: '38px',
@@ -110,7 +110,7 @@ export const MetricsCards: React.FC<MetricsProps> = ({ metrics }) => {
         }}>
           <Share2 size={19} />
         </div>
-        <div>
+        <div style={{ overflow: 'hidden', minWidth: 0, flex: 1 }}>
           <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.6px', fontWeight: 700, marginBottom: '2px' }}>
             Alerts Logged
           </div>

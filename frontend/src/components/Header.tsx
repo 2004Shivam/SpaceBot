@@ -30,147 +30,89 @@ export const Header: React.FC<HeaderProps> = ({
   onLogout,
 }) => {
   return (
-    <header className="card-clean" style={{
-      padding: '12px 18px',
-      marginBottom: '18px',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      flexWrap: 'wrap',
-      gap: '10px',
-    }}>
-      {/* Brand */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
-        <div style={{
-          width: '36px',
-          height: '36px',
-          borderRadius: '9px',
-          backgroundColor: 'var(--accent-rocket)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: '#ffffff',
-          boxShadow: '0 2px 8px rgba(201, 79, 12, 0.35)',
-          flexShrink: 0,
-        }}>
+    <header className="card-clean header-container">
+      {/* 1. Brand Identity */}
+      <div className="header-brand">
+        <div className="header-logo-badge">
           <Rocket size={18} />
         </div>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '7px' }}>
-            <h1 style={{ fontSize: '1.15rem', fontWeight: 800, letterSpacing: '-0.3px', color: 'var(--text-primary)' }}>
+            <h1 style={{ fontSize: '1.15rem', fontWeight: 800, letterSpacing: '-0.3px', color: 'var(--text-primary)', margin: 0 }}>
               SpaceBot
             </h1>
             <span className="badge badge-go" style={{ fontSize: '0.62rem', padding: '2px 6px' }}>
               <Radio size={9} /> LIVE
             </span>
           </div>
-          {/* Subtitle: hidden on very small screens */}
-          <p style={{ fontSize: '0.7rem', color: 'var(--text-secondary)' }} className="header-subtitle">
+          <p style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', margin: 0 }} className="header-subtitle">
             Orbital Mission Radar
           </p>
         </div>
       </div>
 
-      {/* Right side controls */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
-
-        {/* Controls unlocked only after Google Sign-In */}
-        {user && (
-          <>
-            {/* Tab Nav */}
-            <div style={{
-              display: 'flex',
-              backgroundColor: 'var(--bg-surface)',
-              borderRadius: '8px',
-              padding: '2px',
-              border: '1px solid var(--border-card)',
-            }}>
-              <button
-                onClick={() => setActiveTab('missions')}
-                title="Upcoming Missions"
-                style={{
-                  padding: '5px 10px',
-                  borderRadius: '6px',
-                  border: 'none',
-                  backgroundColor: activeTab === 'missions' ? 'var(--accent-primary)' : 'transparent',
-                  color: activeTab === 'missions' ? '#ffffff' : 'var(--text-secondary)',
-                  fontWeight: 600,
-                  fontSize: '0.78rem',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '5px',
-                  transition: 'all 0.15s ease',
-                }}
-              >
-                <Rocket size={13} />
-                <span className="tab-label">Missions</span>
-              </button>
-              <button
-                onClick={() => setActiveTab('history')}
-                title="Alert History"
-                style={{
-                  padding: '5px 10px',
-                  borderRadius: '6px',
-                  border: 'none',
-                  backgroundColor: activeTab === 'history' ? 'var(--accent-primary)' : 'transparent',
-                  color: activeTab === 'history' ? '#ffffff' : 'var(--text-secondary)',
-                  fontWeight: 600,
-                  fontSize: '0.78rem',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '5px',
-                  transition: 'all 0.15s ease',
-                }}
-              >
-                <History size={13} />
-                <span className="tab-label">Alerts {alertCount > 0 ? `(${alertCount})` : ''}</span>
-              </button>
-            </div>
-
-            {/* Subscriptions Bell */}
+      {/* 2. Navigation & Mission Actions (Rendered when authenticated) */}
+      {user && (
+        <div className="header-nav-group">
+          {/* Segmented Tab Nav */}
+          <div className="header-tabs">
             <button
-              className="btn btn-secondary"
+              onClick={() => setActiveTab('missions')}
+              title="Upcoming Missions"
+              className={`header-tab-btn ${activeTab === 'missions' ? 'active' : ''}`}
+            >
+              <Rocket size={13} />
+              <span>Missions</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('history')}
+              title="Alert History"
+              className={`header-tab-btn ${activeTab === 'history' ? 'active' : ''}`}
+            >
+              <History size={13} />
+              <span>Alerts</span>
+              {alertCount > 0 && (
+                <span className="header-tab-badge">{alertCount}</span>
+              )}
+            </button>
+          </div>
+
+          {/* Actions: Subscriptions & Sync */}
+          <div className="header-nav-actions">
+            <button
+              className="btn btn-secondary header-action-btn"
               onClick={onOpenSubscriptions}
               title="Manage Agency Notifications"
-              style={{ padding: '6px 9px', fontSize: '0.78rem' }}
             >
               <Bell size={14} color="var(--accent-rocket)" />
               {user?.subscribedAgencies?.length ? (
-                <span style={{
-                  fontSize: '0.62rem',
-                  backgroundColor: 'var(--accent-rocket)',
-                  color: '#ffffff',
-                  padding: '1px 5px',
-                  borderRadius: '99px',
-                  fontWeight: 700,
-                }}>
+                <span className="header-bell-badge">
                   {user.subscribedAgencies.length}
                 </span>
               ) : null}
             </button>
 
-            {/* Sync Button */}
             <button
-              className="btn btn-rocket"
+              className="btn btn-rocket header-action-btn"
               onClick={onSync}
               disabled={syncing}
               title="Sync latest launches from space API"
-              style={{ opacity: syncing ? 0.75 : 1, padding: '6px 12px', fontSize: '0.78rem' }}
+              style={{ opacity: syncing ? 0.75 : 1 }}
             >
               <RefreshCw size={13} style={{ animation: syncing ? 'spin 1s linear infinite' : 'none' }} />
               <span className="tab-label">{syncing ? 'Syncing...' : 'Sync'}</span>
             </button>
-          </>
-        )}
+          </div>
+        </div>
+      )}
 
-        {/* Theme Toggle (Always Available) */}
+      {/* 3. Global User & Utility Controls */}
+      <div className="header-user-group">
+        {/* Theme Toggle */}
         <button
           onClick={onToggleTheme}
-          className="btn btn-secondary"
+          className="btn btn-secondary header-icon-btn"
           title={`Switch to ${theme === 'dark' ? 'Light (Solar Paper)' : 'Dark'} Mode`}
-          style={{ padding: '6px 9px' }}
         >
           {theme === 'dark'
             ? <Sun size={14} color="var(--accent-warning)" />
@@ -178,39 +120,26 @@ export const Header: React.FC<HeaderProps> = ({
           }
         </button>
 
-        {/* Auth */}
+        {/* User Profile or Sign-In */}
         {user ? (
           <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
             <div
               onClick={onOpenSubscriptions}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '4px 8px',
-                borderRadius: '6px',
-                backgroundColor: 'var(--bg-surface)',
-                border: '1px solid var(--border-card)',
-                cursor: 'pointer',
-                fontSize: '0.78rem',
-                color: 'var(--text-primary)',
-                fontWeight: 600,
-              }}
-              title="Manage subscription"
+              className="header-user-pill"
+              title="Manage subscription & notifications"
             >
               {user.picture ? (
                 <img src={user.picture} alt={user.name} style={{ width: '20px', height: '20px', borderRadius: '50%' }} />
               ) : (
                 <UserIcon size={14} color="var(--accent-primary)" />
               )}
-              <span style={{ maxWidth: '80px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} className="tab-label">
+              <span className="header-user-name">
                 {user.name.split(' ')[0]}
               </span>
             </div>
             <button
               onClick={onLogout}
-              className="btn btn-secondary"
-              style={{ padding: '6px 8px' }}
+              className="btn btn-secondary header-icon-btn"
               title="Sign Out"
             >
               <LogOut size={13} />

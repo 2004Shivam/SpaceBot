@@ -11,6 +11,7 @@ import { SubscriptionModal } from './components/SubscriptionModal';
 import { ToastContainer } from './components/Toast';
 import type { ToastMessage } from './components/Toast';
 import { notificationService } from './services/notificationService';
+import { GatekeeperLanding } from './components/GatekeeperLanding';
 import {
   Search, Rocket, Download, AlertCircle, X, ArrowUpDown,
   SlidersHorizontal, ChevronDown, ChevronUp, Sparkles, RefreshCw,
@@ -26,7 +27,17 @@ export const App: React.FC = () => {
   // ── Auth ───────────────────────────────────────────────────────────────────
   const [user, setUser] = useState<UserProfile | null>(() => {
     const saved = localStorage.getItem('spacebot-user');
-    return saved ? JSON.parse(saved) : null;
+    if (!saved) return null;
+    try {
+      const parsed = JSON.parse(saved);
+      if (!parsed || parsed.email?.includes('guest') || parsed.email?.includes('normandy')) {
+        localStorage.removeItem('spacebot-user');
+        return null;
+      }
+      return parsed;
+    } catch {
+      return null;
+    }
   });
 
   // ── Data ───────────────────────────────────────────────────────────────────
@@ -235,8 +246,19 @@ export const App: React.FC = () => {
         onLogout={handleLogout}
       />
 
-      {/* PWA Install Banner */}
-      {deferredPrompt && (
+      {/* ── Conditional View: Gatekeeper Landing vs Full Telemetry Dashboard ──── */}
+      {!user ? (
+        <GatekeeperLanding
+          onSuccess={u => {
+            setUser(u);
+            loadData();
+          }}
+          onToast={addToast}
+        />
+      ) : (
+        <>
+          {/* PWA Install Banner */}
+          {deferredPrompt && (
         <div className="card-clean welcome-banner" style={{
           padding: '10px 16px',
           marginBottom: '14px',
@@ -562,6 +584,8 @@ export const App: React.FC = () => {
           )}
         </>
       )}
+    </>
+  )}
 
       {/* Modals */}
       {activeLaunchForAlert && (

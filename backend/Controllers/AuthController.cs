@@ -119,61 +119,6 @@ public class AuthController : ControllerBase
             user.WebPushEnabled
         ));
     }
-
-    /// <summary>
-    /// Guest access: a named email-based session for demos/interviews without a Google account.
-    /// Clearly labelled in the UI — no pretense of Google auth.
-    /// </summary>
-    [HttpPost("guest-login")]
-    public async Task<ActionResult<UserProfileDto>> GuestLogin([FromBody] GuestLoginRequest request)
-    {
-        var email = string.IsNullOrWhiteSpace(request.Email) ? "guest@spacebot.demo" : request.Email.Trim();
-        var name  = string.IsNullOrWhiteSpace(request.Name)  ? "Space Explorer"       : request.Name.Trim();
-
-        // Validate email format loosely
-        if (!email.Contains('@'))
-        {
-            return BadRequest(new { message = "Please enter a valid email address." });
-        }
-
-        var user = await _db.Users.FirstOrDefaultAsync(u => u.Email.ToLower() == email.ToLower());
-        if (user == null)
-        {
-            user = new User
-            {
-                Email = email,
-                Name = name,
-                Picture = null,   // no picture for guest — UI shows initials instead
-                SubscribedAgencies = "SpaceX,NASA,ISRO",
-                WebPushEnabled = true,
-                CreatedAt = DateTime.UtcNow,
-                LastActiveAt = DateTime.UtcNow
-            };
-            _db.Users.Add(user);
-        }
-        else
-        {
-            user.Name = name;
-            user.LastActiveAt = DateTime.UtcNow;
-        }
-
-        await _db.SaveChangesAsync();
-
-        var agencyList = (user.SubscribedAgencies ?? "")
-            .Split(',', StringSplitOptions.RemoveEmptyEntries)
-            .Select(a => a.Trim())
-            .ToList();
-
-        return Ok(new UserProfileDto(
-            user.Id,
-            user.Email,
-            user.Name,
-            user.Picture,
-            agencyList,
-            user.WebPushEnabled
-        ));
-    }
-
     /// <summary>
     /// Fetch a user's current profile (for session restore on page refresh).
     /// </summary>

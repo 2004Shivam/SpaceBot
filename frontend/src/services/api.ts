@@ -54,15 +54,6 @@ export const api = {
     return res.json();
   },
 
-  async guestLogin(email: string, name: string): Promise<import('../types').UserProfile> {
-    const res = await fetch(`${API_BASE}/auth/guest-login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, name }),
-    });
-    if (!res.ok) throw new Error(`Guest login failed: ${res.statusText}`);
-    return res.json();
-  },
 
   async updateSubscriptions(userId: number, agencies: string[], webPushEnabled: boolean): Promise<UserProfile> {
     const res = await fetch(`${API_BASE}/subscriptions`, {

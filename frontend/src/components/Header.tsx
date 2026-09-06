@@ -74,81 +74,98 @@ export const Header: React.FC<HeaderProps> = ({
       {/* Right side controls */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
 
-        {/* Tab Nav */}
-        <div style={{
-          display: 'flex',
-          backgroundColor: 'var(--bg-surface)',
-          borderRadius: '8px',
-          padding: '2px',
-          border: '1px solid var(--border-card)',
-        }}>
-          <button
-            onClick={() => setActiveTab('missions')}
-            title="Upcoming Missions"
-            style={{
-              padding: '5px 10px',
-              borderRadius: '6px',
-              border: 'none',
-              backgroundColor: activeTab === 'missions' ? 'var(--accent-primary)' : 'transparent',
-              color: activeTab === 'missions' ? '#ffffff' : 'var(--text-secondary)',
-              fontWeight: 600,
-              fontSize: '0.78rem',
-              cursor: 'pointer',
+        {/* Controls unlocked only after Google Sign-In */}
+        {user && (
+          <>
+            {/* Tab Nav */}
+            <div style={{
               display: 'flex',
-              alignItems: 'center',
-              gap: '5px',
-              transition: 'all 0.15s ease',
-            }}
-          >
-            <Rocket size={13} />
-            <span className="tab-label">Missions</span>
-          </button>
-          <button
-            onClick={() => setActiveTab('history')}
-            title="Alert History"
-            style={{
-              padding: '5px 10px',
-              borderRadius: '6px',
-              border: 'none',
-              backgroundColor: activeTab === 'history' ? 'var(--accent-primary)' : 'transparent',
-              color: activeTab === 'history' ? '#ffffff' : 'var(--text-secondary)',
-              fontWeight: 600,
-              fontSize: '0.78rem',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '5px',
-              transition: 'all 0.15s ease',
-            }}
-          >
-            <History size={13} />
-            <span className="tab-label">Alerts {alertCount > 0 ? `(${alertCount})` : ''}</span>
-          </button>
-        </div>
-
-        {/* Subscriptions Bell */}
-        <button
-          className="btn btn-secondary"
-          onClick={onOpenSubscriptions}
-          title="Manage Agency Notifications"
-          style={{ padding: '6px 9px', fontSize: '0.78rem' }}
-        >
-          <Bell size={14} color="var(--accent-rocket)" />
-          {user?.subscribedAgencies?.length ? (
-            <span style={{
-              fontSize: '0.62rem',
-              backgroundColor: 'var(--accent-rocket)',
-              color: '#ffffff',
-              padding: '1px 5px',
-              borderRadius: '99px',
-              fontWeight: 700,
+              backgroundColor: 'var(--bg-surface)',
+              borderRadius: '8px',
+              padding: '2px',
+              border: '1px solid var(--border-card)',
             }}>
-              {user.subscribedAgencies.length}
-            </span>
-          ) : null}
-        </button>
+              <button
+                onClick={() => setActiveTab('missions')}
+                title="Upcoming Missions"
+                style={{
+                  padding: '5px 10px',
+                  borderRadius: '6px',
+                  border: 'none',
+                  backgroundColor: activeTab === 'missions' ? 'var(--accent-primary)' : 'transparent',
+                  color: activeTab === 'missions' ? '#ffffff' : 'var(--text-secondary)',
+                  fontWeight: 600,
+                  fontSize: '0.78rem',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '5px',
+                  transition: 'all 0.15s ease',
+                }}
+              >
+                <Rocket size={13} />
+                <span className="tab-label">Missions</span>
+              </button>
+              <button
+                onClick={() => setActiveTab('history')}
+                title="Alert History"
+                style={{
+                  padding: '5px 10px',
+                  borderRadius: '6px',
+                  border: 'none',
+                  backgroundColor: activeTab === 'history' ? 'var(--accent-primary)' : 'transparent',
+                  color: activeTab === 'history' ? '#ffffff' : 'var(--text-secondary)',
+                  fontWeight: 600,
+                  fontSize: '0.78rem',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '5px',
+                  transition: 'all 0.15s ease',
+                }}
+              >
+                <History size={13} />
+                <span className="tab-label">Alerts {alertCount > 0 ? `(${alertCount})` : ''}</span>
+              </button>
+            </div>
 
-        {/* Theme Toggle */}
+            {/* Subscriptions Bell */}
+            <button
+              className="btn btn-secondary"
+              onClick={onOpenSubscriptions}
+              title="Manage Agency Notifications"
+              style={{ padding: '6px 9px', fontSize: '0.78rem' }}
+            >
+              <Bell size={14} color="var(--accent-rocket)" />
+              {user?.subscribedAgencies?.length ? (
+                <span style={{
+                  fontSize: '0.62rem',
+                  backgroundColor: 'var(--accent-rocket)',
+                  color: '#ffffff',
+                  padding: '1px 5px',
+                  borderRadius: '99px',
+                  fontWeight: 700,
+                }}>
+                  {user.subscribedAgencies.length}
+                </span>
+              ) : null}
+            </button>
+
+            {/* Sync Button */}
+            <button
+              className="btn btn-rocket"
+              onClick={onSync}
+              disabled={syncing}
+              title="Sync latest launches from space API"
+              style={{ opacity: syncing ? 0.75 : 1, padding: '6px 12px', fontSize: '0.78rem' }}
+            >
+              <RefreshCw size={13} style={{ animation: syncing ? 'spin 1s linear infinite' : 'none' }} />
+              <span className="tab-label">{syncing ? 'Syncing...' : 'Sync'}</span>
+            </button>
+          </>
+        )}
+
+        {/* Theme Toggle (Always Available) */}
         <button
           onClick={onToggleTheme}
           className="btn btn-secondary"
@@ -159,18 +176,6 @@ export const Header: React.FC<HeaderProps> = ({
             ? <Sun size={14} color="var(--accent-warning)" />
             : <Moon size={14} color="var(--accent-primary)" />
           }
-        </button>
-
-        {/* Sync Button */}
-        <button
-          className="btn btn-rocket"
-          onClick={onSync}
-          disabled={syncing}
-          title="Sync latest launches from space API"
-          style={{ opacity: syncing ? 0.75 : 1, padding: '6px 12px', fontSize: '0.78rem' }}
-        >
-          <RefreshCw size={13} style={{ animation: syncing ? 'spin 1s linear infinite' : 'none' }} />
-          <span className="tab-label">{syncing ? 'Syncing...' : 'Sync'}</span>
         </button>
 
         {/* Auth */}
@@ -213,12 +218,12 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         ) : (
           <button
-            className="btn btn-primary"
+            className="btn btn-rocket"
             onClick={onOpenAuth}
-            style={{ padding: '6px 11px', fontSize: '0.78rem' }}
+            style={{ padding: '6px 12px', fontSize: '0.78rem', fontWeight: 700 }}
           >
             <UserIcon size={13} />
-            <span className="tab-label">Sign In</span>
+            <span>Sign in with Google</span>
           </button>
         )}
       </div>

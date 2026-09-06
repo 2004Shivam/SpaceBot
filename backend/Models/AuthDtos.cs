@@ -9,14 +9,6 @@ public record GoogleAuthRequest(
     string Credential      // The signed JWT from Google's OAuth popup (required)
 );
 
-/// <summary>
-/// Sent when a user wants to access the app as a guest without Google sign-in.
-/// Clearly labelled in the UI as "Guest Access" — no pretense of OAuth.
-/// </summary>
-public record GuestLoginRequest(
-    string Email,
-    string Name
-);
 
 public record UserProfileDto(
     int Id,
